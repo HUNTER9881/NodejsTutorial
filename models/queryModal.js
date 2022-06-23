@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 
 const QuerySchema = Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: true, index: true },
     country: { type: String, required: true },
     company: { type: String, required: true },
     workedYear: { type: Number, required: true },

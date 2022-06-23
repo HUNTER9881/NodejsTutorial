@@ -1,11 +1,10 @@
 const { QueryModel, Cashed } = require("../models/queryModal");
 const { country, username, bonus, salary, workedYear, company, year_died, year_born, position,} = require("../config/random");
 const _ = require("underscore");
-// const redis = require('redis')
-// const client = redis.createClient("redis://localhost:6379");
+
 const client = require('../config/redis')
 exports.createData = async (req, res, next) => {
-    const count = 400000;
+    const count = 600000;
     let calculateData = 0;
     const recursion = async (RECURSION_NUMBER) => {
         if (RECURSION_NUMBER > 0) {

@@ -1,12 +1,15 @@
-
-### Query filter
-GET http://localhost:5000/query/test
+### Testing - GET
+GET http://localhost:5000/test/start
 content-type: application/json
 
-### Cashe - POST
-POST http://localhost:5000/query/cashed
+
+
+### Testing - GET
+GET http://localhost:5000/test/nodecashe
 content-type: application/json
 
-### Cashe - GET
-GET http://localhost:5000/query/cashing
+
+
+### Testing - GET
+GET http://localhost:5000/test/redis
 content-type: application/json

@@ -5,8 +5,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const connection = require('./database/index')
 const expressLayouts = require("express-ejs-layouts");
-const mongoose = require("mongoose");
-const mongooseRedisCache = require("mongoose-redis-cache");
 const app = express()
 
 
@@ -23,12 +21,6 @@ app.use(cors({ origin: "*" }));
 app.use(responseTime())
 connection()
 
-mongooseRedisCache(mongoose, {
-    host: "127.0.0.1",
-    port: "6379",
-    //    pass: "redisPass",
-    //    options: "redisOptions"
-})
 
 
 // Rest API
@@ -38,6 +30,7 @@ app.use('/api/file', require('./router/fileRouter'))
 // MongoDb tutorials
 app.use('/aggregate', require('./router/aggregateRouter'))
 app.use('/query', require('./router/queryRouter'))
+app.use('/test', require('./router/test'))
 
 
 app.listen(5000, () => {
