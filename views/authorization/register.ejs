@@ -1,0 +1,44 @@
+<div class="col-md-6 offset-3 mt-3 badge bg-dark text-light pt-3 pb-3" style="font-size: 24px;">
+    Ro'yhatdan o'tish
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 offset-4">
+        <div class="mb-3">
+            <label class="form-label">Ismingizni kiriting</label>
+            <input type="text" id="name" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Pochtani kiriting</label>
+            <input type="text" id="phone" class="form-control">
+        </div>
+        <div class="mb-3">
+            <button type="button" onclick="register()" class="btn btn-success">Ro'yhatdan o'tish</button>
+        </div>
+    </div>
+</div>
+
+<script src="/axios.min.js"></script>
+<script>
+
+    function getElement(element) {
+        return document.getElementById(element)
+    }
+
+    function register() {
+        const name = getElement('name').value
+        const phone = getElement('phone').value
+        if (name == "" || phone == "") {
+            alert("Fill the form")
+        }
+        else {
+            const data = {
+                name: name, phone: phone
+            }
+            axios.post('/api/user/register', data).then((res) => {
+                window.location.reload()
+            })
+        }
+    }
+
+</script>

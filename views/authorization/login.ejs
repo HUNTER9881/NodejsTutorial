@@ -1,0 +1,40 @@
+<div class="col-md-6 offset-3 mt-3 badge bg-dark text-light pt-3 pb-3" style="font-size: 24px;">
+    Kirish
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 offset-4">
+        <div class="mb-3">
+            <label class="form-label">Pochtani kiriting</label>
+            <input type="text" id="phone" class="form-control">
+        </div>
+        <div class="mb-3">
+            <button type="button" onclick="login()" class="btn btn-success">Ro'yhatdan o'tish</button>
+        </div>
+    </div>
+</div>
+
+<script src="/axios.min.js"></script>
+<script>
+
+    function getElement(element) {
+        return document.getElementById(element)
+    }
+
+    function login() {
+        const phone = getElement('phone').value
+        if (phone == "") {
+            alert("Fill the form")
+        }
+        else {
+            const data = {
+                phone: phone, password: "1"
+            }
+            axios.post('/api/user/login/token', data).then((res) => {
+                const token = res.data.token
+                window.localStorage.setItem("token", token)
+            })
+        }
+    }
+
+</script>

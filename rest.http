@@ -1,0 +1,12 @@
+
+### Query filter
+GET http://localhost:5000/query/test
+content-type: application/json
+
+### Cashe - POST
+POST http://localhost:5000/query/cashed
+content-type: application/json
+
+### Cashe - GET
+GET http://localhost:5000/query/cashing
+content-type: application/json

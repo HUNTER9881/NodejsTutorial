@@ -1,0 +1,96 @@
+<div class="col-md-6 offset-3 mt-3 badge bg-dark text-light pt-3 pb-3" style="font-size: 24px;">
+    Chatga xush kelibsiz
+</div>
+
+
+
+<div class="row mt-4">
+    <div class="col-md-6 offset-3">
+        <div id="STATUS" class="badge"> </div>
+        <div class="mb-3">
+            <input type="text" placeholder="Name ... " id="USER_NAME" class="form-control">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control" id="USER_MESSAGE" placeholder="Message ... " rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <button type="button" id="CLEAR_MESSAGE" class="btn btn-danger">Clear</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-10 offset-1 pt-5">
+        <div id="MESSAGES" class=" card mt-2"></div>
+    </div>
+</div>
+
+
+
+<script src="/axios.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    // Chatni portga ulash
+    const socket = io.connect('http://localhost:5000')
+
+    // Elementlar olish
+    const element = function (id) {
+        return document.getElementById(id)
+    }
+    const messages = element("MESSAGES")
+    const user_message = element("USER_MESSAGE")
+    const user_name = element("USER_NAME")
+    const clear_button = element("CLEAR_MESSAGE")
+    
+    // Socket ulanganligini tekshirish
+    if (socket !== undefined) { console.log("Connected to socked.io") }
+    // 1.Hamma habarni olish
+    socket.on('output', async (data) => {
+       
+        const JSON_DATA = JSON.parse(JSON.stringify(data));
+
+
+        if (JSON_DATA.length) {
+            for (let x = 0; x < JSON_DATA.length; x++) {
+                const user = JSON_DATA[x].name
+                const msg = JSON_DATA[x].message
+
+                const message = document.createElement("div")
+                message.setAttribute('class', 'card-header')
+                message.innerHTML += `
+                        <div class="row" style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;"> 
+                            <p style="font-weight: 900;">Username:</p> <p style="font-weight: 500;">${user} </p>
+                        </div>
+                        <div class="row" style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;"> 
+                            <p style="font-weight: 900;">Message:</p> <p style="font-weight: 500;">${msg} </p>
+                        </div>
+                    `
+                messages.appendChild(message)
+                messages.insertBefore(message, messages.firstElementChild)
+            }
+        }
+    })
+
+    // 2.Xabar jo'natish
+    user_message.addEventListener("keydown", function (event) {
+        if (event.which === 13 && event.shiftKey == false) {
+            socket.emit("input", {
+                name: user_name.value,
+                message: user_message.value
+            })
+            event.preventDefault()
+        }
+    })
+
+    // 3.Habarlarni hammasini o'chirish
+    clear_button.addEventListener("click", function () {
+        socket.emit('clear')
+    })
+    socket.on('clear_message', function () {
+        messages.textContent = ""
+    })
+
+
+
+</script>

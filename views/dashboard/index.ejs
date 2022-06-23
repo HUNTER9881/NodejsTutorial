@@ -1,0 +1,45 @@
+<div class="col-md-6 mb-4 offset-3 mt-3 badge bg-dark text-light pt-3 pb-3" style="font-size: 24px;">
+    Saytimizga xush kelibsiz
+</div>
+
+
+<div class="row justify-content-between " id="USERS"></div>
+
+
+<script src="/axios.min.js"></script>
+<script>
+
+    function element(id) {
+        return document.getElementById(id)
+    }
+    const users = element("USERS")
+
+    axios.get('/api/user/all').then((res) => {
+        const JSON_DATA = res.data.data
+        const getHTML = document.getElementById('get_data')
+        for (let x = 0; x < JSON_DATA.length; x++) {
+            const name = JSON_DATA[x].name
+            const phone = JSON_DATA[x].phone
+            const id = JSON_DATA[x]._id
+
+            const username = document.createElement("div")
+            const card_body = document.createElement("div")
+            username.setAttribute('class', 'col-md-4 pt-2 mb-3  pb-2 bg-secondary rounded row justify-content-center align-items-center')
+            username.innerHTML = `
+                <p style="font-size: 18 px; padding: 5px 15px;">Username: ${name}</p> 
+                <p style="font-size: 18 px; padding: 5px 15px;">Telphone: ${phone}</p> 
+                <p style="font-size: 18 px; padding: 5px 15px;">Password: 1 </p>
+                <button class="btn btn-success col-md-10" onclick="deleteUser('${id}')">Delete</button>
+            `
+            users.appendChild(username)
+            users.insertBefore(username, users.firstElementChild)
+        }
+    })
+
+    function deleteUser(id) {
+        console.log(id)
+    }
+
+
+
+</script>

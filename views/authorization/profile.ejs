@@ -1,0 +1,56 @@
+<div class="col-md-6 offset-3 mt-3 badge bg-dark text-light pt-3 pb-3" style="font-size: 24px;">
+    Mening profilim
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 offset-4">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" id="name" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" id="phone" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="password" id="password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <button type="button" onclick="update()" class="btn btn-success">Ro'yhatdan o'tish</button>
+        </div>
+    </div>
+</div>
+<script src="/axios.min.js"></script>
+<script>
+
+    function getElement(element) {
+        return document.getElementById(element)
+    }
+    let token = window.localStorage.getItem('token')
+
+    axios.get('/api/user/token/decode', {
+        headers: {
+            "Authorization": token
+        }
+    })
+        .then((res) => {
+            const data = res.data
+            console.log(data)
+        })
+
+    function update() {
+        const name = getElement('name').value
+        const phone = getElement('phone').value
+        if (name == "" || phone == "") {
+            alert("Fill the form")
+        }
+        else {
+
+            axios.post('/api/user/register',).then((res) => {
+                window.location.reload()
+            })
+        }
+    }
+
+</script>
