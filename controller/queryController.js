@@ -1,7 +1,9 @@
 const { QueryModel, Cashed } = require("../models/queryModal");
 const { country, username, bonus, salary, workedYear, company, year_died, year_born, position,} = require("../config/random");
 const _ = require("underscore");
-
+// const redis = require('redis')
+// const client = redis.createClient("redis://localhost:6379");
+const client = require('../config/redis')
 exports.createData = async (req, res, next) => {
     const count = 400000;
     let calculateData = 0;
@@ -40,30 +42,53 @@ exports.createData = async (req, res, next) => {
     recursion(count);
 };
 exports.optimisationData = async (req, res) => {
-    const globalStartTime = new Date();
-    process.stdout.write("----- Test start -----");
-    async function productCount() {
-        const startTime = new Date();
-        const queries = await Cashed.find({}).lean()
-        console.log("----- Malumotlar soni -----", queries.length);
-        console.log(
-            "----- Tezlik holati ----- ",
-            `${(new Date() - startTime) / 1000} sekund`
-        );
-    }
-    (async () => {
-        try {
-            await productCount();
-        } catch (e) {
-            console.log(e);
-        } finally {
-            console.log(
-                "----- Tugagan payti ----- ",
-                `${(new Date() - globalStartTime) / 1000} sekund`
-            );
-            process.exit();
-        }
-    })();
+    // const globalStartTime = new Date();
+    // process.stdout.write("----- Test start -----");
+    // async function productCount() {
+    //     const startTime = new Date();
+    //     // const queries = await Cashed.find({}).lean().limit(10000)
+
+        const queries = (await client).SMEMBERS('ggg').then((data) => {
+            return JSON.parse(data)
+        })
+        console.log(queries)
+
+    //     console.log(queries)
+        
+    //     console.log("----- Malumotlar soni -----", queries.length);
+    //     console.log(
+    //         "----- Tezlik holati ----- ",
+    //         `${(new Date() - startTime) / 1000} sekund`
+    //     );
+    // }
+    // (async () => {
+    //     try {
+    //         await productCount();
+    //     } catch (e) {
+    //         console.log(e);
+    //     } finally {
+    //         console.log(
+    //             "----- Tugagan payti ----- ",
+    //             `${(new Date() - globalStartTime) / 1000} sekund`
+    //         );
+    //         process.exit();
+    //     }
+    // })();
+
+
+
+
+    
+        // const Users = await Cashed.find({}).limit(10000).lean()
+        // Users.forEach(async (value) => {
+        //     (await client).SADD('ggg', JSON.stringify(value), function(err, reply) {
+        //         if(err) {
+        //             console.log(err)
+        //         }
+        //         console.log(reply)
+        //       });
+        // })
+        
 };
 exports.filters = async (req, res, next) => {
     const queries = await QueryModel.find({}).lean();
